@@ -1,0 +1,124 @@
+{
+  "name": "sublime-search",
+  "displayName": "Sublime Search for Lua",
+  "description": "Sublime Text-style method navigation for Lua and tolua projects",
+  "version": "0.1.0",
+  "publisher": "sublime-search",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:lua",
+    "workspaceContains:**/*.lua"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "sublimeSearch.searchWorkspaceSymbols",
+        "title": "Sublime Search: Go to Symbol in Workspace",
+        "category": "Sublime Search"
+      },
+      {
+        "command": "sublimeSearch.searchDocumentSymbols",
+        "title": "Sublime Search: Go to Symbol in File",
+        "category": "Sublime Search"
+      },
+      {
+        "command": "sublimeSearch.rebuildIndex",
+        "title": "Sublime Search: Rebuild Index",
+        "category": "Sublime Search"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "sublimeSearch.searchWorkspaceSymbols",
+        "key": "ctrl+shift+r",
+        "mac": "cmd+shift+r",
+        "when": "editorTextFocus && editorLangId == lua"
+      },
+      {
+        "command": "sublimeSearch.searchDocumentSymbols",
+        "key": "ctrl+r",
+        "mac": "cmd+r",
+        "when": "editorTextFocus && editorLangId == lua"
+      }
+    ],
+    "configuration": {
+      "title": "Sublime Search",
+      "properties": {
+        "sublimeSearch.lua.include": {
+          "type": "array",
+          "default": [
+            "**/*.lua"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Glob patterns for Lua files to include in indexing"
+        },
+        "sublimeSearch.lua.exclude": {
+          "type": "array",
+          "default": [
+            "**/lua52/**",
+            "**/tolua/**",
+            "**/node_modules/**",
+            "**/.git/**"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Glob patterns for Lua files to exclude from indexing"
+        },
+        "sublimeSearch.csharp.include": {
+          "type": "array",
+          "default": [
+            "**/*.cs"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Glob patterns for C# files to include in indexing"
+        },
+        "sublimeSearch.csharp.exclude": {
+          "type": "array",
+          "default": [
+            "**/Editor/**",
+            "**/node_modules/**",
+            "**/.git/**"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Glob patterns for C# files to exclude from indexing"
+        },
+        "sublimeSearch.enableCSharp": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable C# symbol indexing for tolua integration"
+        },
+        "sublimeSearch.indexOnStartup": {
+          "type": "boolean",
+          "default": true,
+          "description": "Build index automatically when workspace loads"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --sourcemap",
+    "watch": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.80.0",
+    "esbuild": "^0.20.0",
+    "typescript": "^5.3.0"
+  }
+}
